@@ -196,7 +196,26 @@ document.addEventListener('DOMContentLoaded', () => {
                                 return Promise.all(teamRequests);
                             })
                             .then(scores => {
-                                // get a winning scores
+                                /** Create a request string
+                                 * Then return request Promise to /winner endpoint
+                                 */
+                                let winnerRequestString = 'tournamentId=' + response.tournamentId + '&matchScore=' + scores[0].score;
+                                for(let s = 1; s < scores.length; s += 1){
+                                    // teams scores
+                                    winnerRequestString += '&teamScores=' + scores[s].score;
+                                    teams[scores[s].teamId] = {name: scores[s].name, score: scores[s].score};
+                                }
+                                return request({
+                                    method: 'GET',
+                                    url: '/winner',
+                                    headers: {
+                                        'Content-Type': 'application/x-www-form-urlencoded'
+                                    },
+                                    params: winnerRequestString
+                                });
+                            })
+                            .then(winningScore => {
+                                //final step
                             })
                         );
                     }
