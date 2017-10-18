@@ -62,11 +62,14 @@ document.addEventListener('DOMContentLoaded', () => {
     let teamsPerMatch = document.getElementById('teamsPerMatch'),
         numberOfTeams = document.getElementById('numberOfTeams'),
         start = document.getElementById('start'),
-        winner = document.getElementById('winner');
+        winner = document.getElementById('winner'),
+        error = document.getElementById('error');
 
     // Add event listener to start button
     start.addEventListener('click', e => {
         e.preventDefault();
+        // Remove error message before the request
+        error.classList.remove('error_show');
         /**
          * Create a POST request to /tournament endpoint
          * In .then method I am going to work with tournament and first round data
@@ -84,6 +87,10 @@ document.addEventListener('DOMContentLoaded', () => {
         })
             .then(response => {
                 // response here
+            })
+            .catch(err => {
+                error.innerText = err.message;
+                error.classList.add('error_show');
             });
     });
 });
