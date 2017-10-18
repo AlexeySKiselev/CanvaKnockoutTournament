@@ -215,7 +215,29 @@ document.addEventListener('DOMContentLoaded', () => {
                                 });
                             })
                             .then(winningScore => {
-                                //final step
+                                let matchBar = document.getElementById('progressBar' + (round*numberOfTeamsIntForBar + match.match));
+                                /**
+                                 * Check teams for scores and compare with winning scores to get the winner's Id
+                                 * I use @teams Object to avoid duplicated requests to /team endpoint
+                                 *  !!! I confused at this point, because: The winners of this match will play with the winner in other match,
+                                 *  !!! But there is no requirement which match's winner current winner will play with
+                                 *  !!! As there are no requirements about the matches, I am going to iterate over "this round" winners
+                                 *  !!! Then connect @teamsPerMatch neighbors for the next round
+                                 *  !!! The problem is in async requests: In resulting array I can get a winners from 1 and 100 match (not from 1 and 2 matches) like a neighbors
+                                 *  !!! To solve this problem I can return not only the winner of match, but also match ID
+                                 */
+                                /**
+                                 * I iterate over match.teamIds array, then compare it with @teams Object scores
+                                 * And get the minimum Id as a requirement
+                                 */
+                                let minId = Infinity;
+                                for(let t of match.teamIds){
+                                    if(teams[t].score === winningScore.score && t < minId){
+                                        minId = t;
+                                    }
+                                }
+                                matchBar.classList.add('filled');
+                                return minId;
                             })
                         );
                     }
