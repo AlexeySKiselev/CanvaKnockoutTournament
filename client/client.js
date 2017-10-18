@@ -168,7 +168,35 @@ document.addEventListener('DOMContentLoaded', () => {
                             }
                         })
                             .then(matchScore => {
-                                // get teams scores at the second request
+                                let teamRequests = [];
+                                /**
+                                 * Add @matchScore to result Promise Array for the next steps
+                                 */
+                                teamRequests.push(matchScore);
+                                /**
+                                 * Get teams score
+                                 * Use Promise.all for getting all scores from async requests in one match
+                                 */
+                                for(let teamid of match.teamIds){
+                                    teamRequests.push(request({
+                                        method: 'GET',
+                                        url: '/team',
+                                        headers: {
+                                            'Content-Type': 'application/x-www-form-urlencoded'
+                                        },
+                                        params: {
+                                            tournamentId: response.tournamentId,
+                                            teamId: teamid
+                                        }
+                                    }));
+                                }
+                                /**
+                                 * Waiting for all teams (in one match) requests
+                                 */
+                                return Promise.all(teamRequests);
+                            })
+                            .then(scores => {
+                                // get a winning scores
                             })
                         );
                     }
