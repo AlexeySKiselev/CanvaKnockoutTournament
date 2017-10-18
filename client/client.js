@@ -55,3 +55,35 @@ function request(options){
         xhr.send(params);
     });
 }
+
+// Add event listener to ensure, that document is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    // Create elements selectors in VanillaJS
+    let teamsPerMatch = document.getElementById('teamsPerMatch'),
+        numberOfTeams = document.getElementById('numberOfTeams'),
+        start = document.getElementById('start'),
+        winner = document.getElementById('winner');
+
+    // Add event listener to start button
+    start.addEventListener('click', e => {
+        e.preventDefault();
+        /**
+         * Create a POST request to /tournament endpoint
+         * In .then method I am going to work with tournament and first round data
+         */
+        request({
+            method: 'POST',
+            url: '/tournament',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            params: {
+                teamsPerMatch: teamsPerMatch.value,
+                numberOfTeams: numberOfTeams.value
+            }
+        })
+            .then(response => {
+                // response here
+            });
+    });
+});
