@@ -6,11 +6,15 @@
     <title>Knockout Tournament</title>
   </head>
   <body>
-    <!-- Edit me. -->
-    <!-- For tests to pass, the IDs of the elements below MUST NOT change. -->
-    <input id="teamsPerMatch" placeholder="Teams per match" type="number" />
-    <input id="numberOfTeams" placeholder="Number of teams" type="number" />
-    <button id="start">Start</button>
-    <span id="winner"></span>
+    <div class = "wrapper">
+      <div class="logo">Knockout Tournament</div>
+      <!-- For tests to pass, the IDs of the elements below MUST NOT change. -->
+      <label for="teamsPerMatch">Enter number of teams per match</label>
+      <input id="teamsPerMatch" placeholder="Teams per match" type="number" />
+      <label for="numberOfTeams">Number of teams (must be the power of "teams per match" value)</label>
+      <input id="numberOfTeams" placeholder="Number of teams" type="number" />
+      <span id="winner"></span>
+      <button id="start">Start</button>
+    </div>
   </body>
 </html>

@@ -1,3 +1,63 @@
-/*
-    Edit me.
-*/
+* {
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.logo {
+    display: block;
+    width: 100%;
+    margin: 15px auto;
+    padding-top: 80px;
+    font-size: 20pt;
+    text-align: center;
+    background: url(canva_logo.png) top center no-repeat;
+}
+
+input {
+    border: 1px solid #000;
+    width: 400px;
+    height: 30px;
+    line-height: 30px;
+    padding-left: 5px;
+    margin: 0 10px 10px;
+    order: 1;
+    align-self: center;
+}
+
+label {
+    order: 1;
+    color: #555;
+    margin: 10px 0 3px;
+}
+
+button {
+    width: 200px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    color: white;
+    background-color: #00C4CE;
+    font-size: 16pt;
+    border: none;
+    font-weight: 700;
+    order: 2;
+    align-self: center;
+    cursor: pointer;
+    margin: 10px auto;
+    outline: none;
+}
+
+button:active {
+    position: relative;
+    top: 2px;
+}
