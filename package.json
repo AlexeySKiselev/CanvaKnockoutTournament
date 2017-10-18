@@ -1,7 +1,7 @@
 {
   "author": "Canva",
   "name": "knockout-tournament",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "scripts": {
     "start": "node ./server/index.js",
     "test:integration": "mocha ./test/integration/**/*_test.js",

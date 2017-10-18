@@ -63,7 +63,9 @@ document.addEventListener('DOMContentLoaded', () => {
         numberOfTeams = document.getElementById('numberOfTeams'),
         start = document.getElementById('start'),
         winner = document.getElementById('winner'),
-        error = document.getElementById('error');
+        error = document.getElementById('error'),
+        progress = document.getElementById('progress'),
+        infoPanel = document.getElementById('info');
 
     // Add event listener to start button
     start.addEventListener('click', e => {
@@ -86,7 +88,63 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         })
             .then(response => {
-                // response here
+                // clear progress bar
+                while(progress.firstChild) {
+                    progress.removeChild(progress.firstChild);
+                }
+                /** So, I don't have an endpoint for getting number of matches and rounds
+                 * I am going to calculate these values
+                 * I will divide @numberOfTeams by @teamsPerMatch until I will get 1
+                 * Number of iterations equals number of rounds
+                 * Cumulative sum equals to number of Matches
+                 */
+                let numberOfRounds = 0,
+                    teamsPerMatchInt = parseInt(teamsPerMatch.value),
+                    numberOfTeamsInt = parseInt(numberOfTeams.value),
+                    numberOfTeamsIntForBar = parseInt(numberOfTeams.value),
+                    bar;
+                while(numberOfTeamsInt > 1){
+                    numberOfTeamsInt /= teamsPerMatchInt;
+                    /** Create information progress bar
+                     * Create Objects and add to DOM
+                     * I use {current round}*{number of teams} + {current match} formula for getting unique bar ID
+                     * It is useful to wok with this formula later
+                     */
+                    for(let i = 0; i < numberOfTeamsInt; i += 1){
+                        bar = document.createElement('div');
+                        bar.setAttribute('id', 'progressBar'+(numberOfRounds*numberOfTeamsIntForBar + i));
+                        bar.className = 'progress_square';
+                        progress.appendChild(bar);
+                    }
+                    numberOfRounds += 1;
+                }
+                /**
+                 * Starting a game
+                 * Iterate over response.matchUps starting from round 0 to @numberOfRounds
+                 */
+                let round = 0;
+                /**
+                 * Create "teams" Object for teams information
+                 * I need it for preventing multiple requests to API
+                 */
+                let teams = {};
+                /**
+                 * Create @matchUps object for while loop
+                 * Each loop I am going to update this object due to round results
+                 */
+                let matchUps = response.matchUps;
+                /**
+                 * Iterate over all rounds
+                 * After each round I will wait all Promises (playing all matches in one round) to evaluate
+                 * Then re-create new @matchUps object for the new round
+                 */
+                (function playMatches(round, matchUps){
+                    /**
+                     * Create information about tournament progress
+                     */
+                    infoPanel.innerText = 'Teams are playing round ' + (round + 1) + '...';
+
+                })(round, matchUps);
             })
             .catch(err => {
                 error.innerText = err.message;

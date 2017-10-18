@@ -78,3 +78,33 @@ button:active {
 .error_show {
     display: block !important;
 }
+
+#progress {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    order: 2;
+    width: 100%;
+    margin: 15px auto;
+}
+
+.progress_square {
+    display: block;
+    width: 20px;
+    height: 20px;
+    margin: 5px;
+    border: 1px solid #00C4CE;
+}
+
+.progress_square.filled {
+    background-color: #00C4CE;
+}
+
+#info, #winner {
+    order: 2;
+    width: 100%;
+    font-size: 18px;
+    text-align: center;
+    font-weight: 700;
+}
