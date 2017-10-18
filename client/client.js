@@ -143,7 +143,35 @@ document.addEventListener('DOMContentLoaded', () => {
                      * Create information about tournament progress
                      */
                     infoPanel.innerText = 'Teams are playing round ' + (round + 1) + '...';
-
+                    /**
+                     * Iterate over all matches in one round
+                     * In result create an Object with new matchUps array
+                     * I add all Promise-like requests to array
+                     * Then wait for all Promises and generate result winners array for this round
+                     */
+                    let matches = [];
+                    for(let match of matchUps){
+                        /**
+                         * Get match score at first request
+                         * Push all Promise-like requests to ensure that all matches plays in one round
+                         */
+                        matches.push(request({
+                            method: 'GET',
+                            url: '/match',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded'
+                            },
+                            params: {
+                                tournamentId: response.tournamentId,
+                                round,
+                                match: match.match
+                            }
+                        })
+                            .then(matchScore => {
+                                // get teams scores at the second request
+                            })
+                        );
+                    }
                 })(round, matchUps);
             })
             .catch(err => {
