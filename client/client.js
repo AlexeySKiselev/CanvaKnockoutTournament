@@ -180,17 +180,21 @@ document.addEventListener('DOMContentLoaded', () => {
                                  * Use Promise.all for getting all scores from async requests in one match
                                  */
                                 for(let teamid of match.teamIds){
-                                    teamRequests.push(request({
-                                        method: 'GET',
-                                        url: '/team',
-                                        headers: {
-                                            'Content-Type': 'application/x-www-form-urlencoded'
-                                        },
-                                        params: {
-                                            tournamentId: response.tournamentId,
-                                            teamId: teamid
-                                        }
-                                    }));
+                                    if(!teams[teamid]){
+                                        teamRequests.push(request({
+                                            method: 'GET',
+                                            url: '/team',
+                                            headers: {
+                                                'Content-Type': 'application/x-www-form-urlencoded'
+                                            },
+                                            params: {
+                                                tournamentId: response.tournamentId,
+                                                teamId: teamid
+                                            }
+                                        }));
+                                    } else {
+                                        teamRequests.push(teams[teamid]);
+                                    }
                                 }
                                 /**
                                  * Waiting for all teams (in one match) requests
@@ -205,7 +209,9 @@ document.addEventListener('DOMContentLoaded', () => {
                                 for(let s = 1; s < scores.length; s += 1){
                                     // teams scores
                                     winnerRequestString += '&teamScores=' + scores[s].score;
-                                    teams[scores[s].teamId] = {name: scores[s].name, score: scores[s].score};
+                                    if(!teams[scores[s].teamId]){
+                                        teams[scores[s].teamId] = {name: scores[s].name, score: scores[s].score};
+                                    }
                                 }
                                 return request({
                                     method: 'GET',
