@@ -92,6 +92,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 while(progress.firstChild) {
                     progress.removeChild(progress.firstChild);
                 }
+                infoPanel.innerText = '';
+                winner.innerText = '';
                 /** So, I don't have an endpoint for getting number of matches and rounds
                  * I am going to calculate these values
                  * I will divide @numberOfTeams by @teamsPerMatch until I will get 1
@@ -241,6 +243,48 @@ document.addEventListener('DOMContentLoaded', () => {
                             })
                         );
                     }
+                    /**
+                     * Waiting for all playing matches in one round
+                     */
+                    Promise.all(matches)
+                        .then(winningTeams => {
+                            /**
+                             * If we haven't played all rounds - make it again with winners
+                             * I use recursive approach
+                             * I am going to create new @matchUps Object with winners
+                             */
+                            let matchUps = [],
+                                teamArray = [],
+                                match = 0,
+                                counter = 0;
+                            for(let teamId of winningTeams){
+                                teamArray.push(teamId);
+                                counter += 1;
+                                if(counter === teamsPerMatchInt){
+                                    matchUps.push({
+                                        match,
+                                        teamIds: teamArray
+                                    });
+                                    teamArray = [];
+                                    counter = 0;
+                                    match += 1;
+                                }
+                            }
+                            if(round < numberOfRounds-1){
+                                playMatches(round+1, matchUps);
+                            }
+                            /**
+                             * In total at the end I will have only one team ID in winningTeams - that is the winner
+                             * Then I am going to write the winner to "winner" block
+                             */
+                            if(winningTeams.length === 1){
+                                console.log('Team', teams[winningTeams[0]].name, 'with scores', teams[winningTeams[0]].score, 'wins');
+                                // clear Info Block
+                                infoPanel.innerText = '';
+                                winner.innerText = teams[winningTeams[0]].name + ' is the Winner';
+                                start.innerText = 'Start again';
+                            }
+                        });
                 })(round, matchUps);
             })
             .catch(err => {
